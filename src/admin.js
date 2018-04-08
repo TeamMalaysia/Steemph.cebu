@@ -7,12 +7,13 @@ let admin = async msg => {
   let weightage = parseInt(contentData[0]);
   if (weightage > 0 && weightage <= 100) {
     if (contentData.length < 2) {
-      msg.reply('Invalid command');
       return;
     }
     let authorName, permlinkName;
     try {
-      authorName = contentData[1].split(/[\/#]/)[4];
+      authorName = contentData[1]
+        .split(/[\/#]/)[4]
+        .substr(1);
       permlinkName = contentData[1].split(/[\/#]/)[5];
     } catch (e) {
       msg.reply('invalid link');
@@ -21,7 +22,7 @@ let admin = async msg => {
     return upvotePost(
       process.env.STEEM_POSTING,
       process.env.STEEM_USERNAME,
-      authorName.substr(1),
+      authorName,
       permlinkName,
       weightage
     ).then(data => {
@@ -32,8 +33,7 @@ let admin = async msg => {
       }
     });
   } else {
-    msg.reply(`Invalid input`);
-    return { error: 'invalid input' };
+    return;
   }
 };
 
