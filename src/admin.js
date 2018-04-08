@@ -1,6 +1,6 @@
 import { upvotePost } from './controller/upvote';
 
-let admin = async msg => {
+let admin = async (msg, username, posting) => {
   let { content } = msg;
   let contentData = content.split(' ');
 
@@ -20,11 +20,11 @@ let admin = async msg => {
       return;
     }
     return upvotePost(
-      process.env.STEEM_POSTING,
-      process.env.STEEM_USERNAME,
+      posting,
+      username,
       authorName,
       permlinkName,
-      weightage
+      weightage * 100
     ).then(data => {
       if (data !== 'ERROR') {
         msg.reply('upvoted');

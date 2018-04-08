@@ -90,9 +90,21 @@ client.on('message', msg => {
     // Check for Admin
     // **************************************************
 
-    if (msg.channel.id === config.adminChannel) {
-      admin(msg);
+    if (msg.channel.id === config.mahaloChannel) {
+      // MAHALO
+      admin(
+        msg,
+        process.env.MAHALO,
+        process.env.MAHALO_POSTING
+      );
       return;
+    } else if (msg.channel.id === config.bayanihanChannel) {
+      // BAYANI
+      admin(
+        msg,
+        process.env.BAYANIHAN,
+        process.env.BAYANIHAN_POSTING
+      );
     }
     // **************************************************
     // Check for trigger
@@ -191,7 +203,7 @@ client.on('message', msg => {
                     process.env.STEEM_USERNAME,
                     authorName.substr(1),
                     permlinkName,
-                    weightage
+                    weightage * 100
                   )
                     .then(data => {
                       if (data === 'ERROR') {
