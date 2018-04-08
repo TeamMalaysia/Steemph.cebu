@@ -10,8 +10,14 @@ let admin = async msg => {
       msg.reply('Invalid command');
       return;
     }
-    let authorName = contentData[1].split(/[\/#]/)[4];
-    let permlinkName = contentData[1].split(/[\/#]/)[5];
+    let authorName, permlinkName;
+    try {
+      authorName = contentData[1].split(/[\/#]/)[4];
+      permlinkName = contentData[1].split(/[\/#]/)[5];
+    } catch (e) {
+      msg.reply('invalid link');
+      return;
+    }
     return upvotePost(
       process.env.STEEM_POSTING,
       process.env.STEEM_USERNAME,
