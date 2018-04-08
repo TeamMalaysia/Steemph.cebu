@@ -2,7 +2,8 @@
   "mongoUrl": "MONGODB URL",
   "botId": "BOT ID",
   "channelId": ["123123123"],
-  "adminId": "123",
+  "adminChannel": "123",
+  "adminId": [""],
   "trigger": "$",
   "timeAllowed": "43200",
   "weightage": "500"
