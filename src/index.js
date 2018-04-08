@@ -33,6 +33,7 @@ import {
   getDateTimeFromTimestamp,
   timeConvertMessage
 } from './controller/util';
+import admin from './admin';
 
 import config from './config.json';
 import regex from './regex.json';
@@ -42,6 +43,7 @@ import regex from './regex.json';
 // ============================================================
 let timeDiff;
 const client = new Discord.Client();
+let weightage = config.weightage || 1000;
 
 // ============================================================
 // Discord Ready connected
@@ -58,7 +60,7 @@ client.on('message', msg => {
   // **************************************************
   // Restricted Channel
   // **************************************************
-  if (!config.channelId.include(msg.channel.id)) {
+  if (!config.channelId.includes(msg.channel.id)) {
     return;
   } else {
     // **************************************************
@@ -81,15 +83,15 @@ client.on('message', msg => {
     // Check for Bot message
     // **************************************************
 
-    if (id === config.botId) {
+    if (currentUserId === config.botId) {
       return;
     }
     // **************************************************
     // Check for Admin
     // **************************************************
 
-    if (msg.channel.id === config.adminId) {
-      msg.reply('admin');
+    if (msg.channel.id === config.adminChannel) {
+      admin(msg);
       return;
     }
     // **************************************************
@@ -101,6 +103,18 @@ client.on('message', msg => {
       const cmd = args[0];
       args = args.splice(1);
       switch (cmd) {
+        case 'info':
+          msg.reply(
+            `current weightage is ${weightage / 100}%`
+          );
+          break;
+        case 'weightage':
+          if (config.adminId.includes(currentUserId)) {
+            msg.reply('admin');
+          } else {
+            msg.reply(`You are not authorized to do this.`);
+          }
+          break;
         case 'upvote':
           if (
             args.length === 1 &&
@@ -167,7 +181,7 @@ client.on('message', msg => {
                     process.env.STEEM_USERNAME,
                     authorName.substr(1),
                     permlinkName,
-                    config.weightage
+                    weightage
                   )
                     .then(data => {
                       if (data === 'ERROR') {
