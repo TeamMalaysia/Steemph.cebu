@@ -5,7 +5,7 @@ let admin = async msg => {
   let contentData = content.split(' ');
 
   let weightage = parseInt(contentData[0]);
-  if (weightage > 0 && weighrage <= 100) {
+  if (weightage > 0 && weightage <= 100) {
     if (contentData.length < 2) {
       msg.reply('Invalid command');
       return;
@@ -18,7 +18,13 @@ let admin = async msg => {
       authorName.substr(1),
       permlinkName,
       weightage
-    );
+    ).then(data => {
+      if (data !== 'ERROR') {
+        msg.reply('upvoted');
+      } else {
+        msg.reply('unable to upvote');
+      }
+    });
   } else {
     msg.reply(`Invalid input`);
     return { error: 'invalid input' };

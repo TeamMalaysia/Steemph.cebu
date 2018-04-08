@@ -1,12 +1,10 @@
 {
   "scripts": {
-    "dev":
-      "NODE_ENV=development nodemon -w src --exec \"babel-node src --presets env\"",
+    "dev": "NODE_ENV=development nodemon -w src --exec \"babel-node src --presets env\"",
     "build": "babel src -s -D -d dist --presets env",
     "start": "node dist/index.js",
     "lint": "eslint src",
-    "prettier":
-      "prettier --write --single-quote --print-width=120 --tab-width=2 \"src/**/*.{js,jsx}\""
+    "prettier": "prettier --write --single-quote --print-width=120 --tab-width=2 \"src/**/*.{js,jsx}\""
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -43,8 +41,7 @@
   },
   "name": "Steemph.cebu",
   "version": "1.0.0",
-  "description":
-    "Upvote bot on Steem Blockchain for Philippines Cebu Community",
+  "description": "Upvote bot on Steem Blockchain for Philippines Cebu Community",
   "main": "index.js",
   "repository": "git@github.com:superoo7/Steemph.cebu.git",
   "author": "Lai Weng Han <jlwhoo7@gmail.com>",

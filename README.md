@@ -9,6 +9,11 @@ Upvote bot on Steem Blockchain for Philippines Cebu Community
 * Upvote can be done in every 12 hours.
 * Using command `$upvote <steemit link>`
 
+## Version 2 (check branch v2.0.0)
+
+* Added admin channel (No CoolDown)
+* Added adjust in weightage
+
 # Developer part
 
 * modified `config.sample.json` to `config.json` in src file

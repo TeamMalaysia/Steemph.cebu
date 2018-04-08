@@ -110,7 +110,17 @@ client.on('message', msg => {
           break;
         case 'weightage':
           if (config.adminId.includes(currentUserId)) {
-            msg.reply('admin');
+            if (args.length === 1) {
+              let val = parseInt(args[0]);
+              if (val > 0 && val <= 100) {
+                weightage = val;
+                msg.reply(
+                  `updated weightage to ${weightage}%`
+                );
+              } else {
+                msg.reply('invalid weightage %');
+              }
+            }
           } else {
             msg.reply(`You are not authorized to do this.`);
           }
