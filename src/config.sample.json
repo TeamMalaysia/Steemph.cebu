@@ -7,5 +7,5 @@
   "adminId": [""],
   "trigger": "$",
   "timeAllowed": "43200",
-  "weightage": "500"
+  "weightage": "10"
 }

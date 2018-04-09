@@ -43,7 +43,7 @@ import regex from './regex.json';
 // ============================================================
 let timeDiff;
 const client = new Discord.Client();
-let weightage = config.weightage || 1000;
+let weightage = config.weightage || 10;
 
 // ============================================================
 // Discord Ready connected
@@ -116,9 +116,7 @@ client.on('message', msg => {
       args = args.splice(1);
       switch (cmd) {
         case 'info':
-          msg.reply(
-            `current weightage is ${weightage / 100}%`
-          );
+          msg.reply(`current weightage is ${weightage}%`);
           break;
         case 'weightage':
           if (config.adminId.includes(currentUserId)) {
