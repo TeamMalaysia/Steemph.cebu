@@ -34,6 +34,7 @@ import {
   timeConvertMessage
 } from './controller/util';
 import admin from './admin';
+import main from './user';
 
 import config from './config.json';
 import regex from './regex.json';
@@ -116,170 +117,59 @@ client.on('message', msg => {
       args = args.splice(1);
       switch (cmd) {
         case 'info':
-          msg.reply(`current weightage is ${weightage}%`);
+          msg.reply(`current weightage is ${weightage/100}%`);
           break;
-        case 'weightage':
-          if (config.adminId.includes(currentUserId)) {
-            if (args.length === 1) {
-              let val = parseInt(args[0]);
-              if (val > 0 && val <= 100) {
-                weightage = val;
-                msg.reply(
-                  `updated weightage to ${weightage}%`
-                );
-              } else {
-                msg.reply('invalid weightage %');
-              }
-            }
-          } else {
-            msg.reply(`You are not authorized to do this.`);
-          }
-          break;
+          //      case 'weightage':
+          //        if (config.adminId.includes(currentUserId)) {
+          //          if (args.length === 1) {
+          //            let val = parseInt(args[0]);
+          //            if (val > 0 && val <= 100) {
+          //              weightage = val;
+          //              msg.reply(
+          //                `updated weightage to ${weightage}%`
+          //              );
+          //            } else {
+          //              msg.reply('invalid weightage %');
+          //            }
+          //          }
+          //        } else {
+          //          msg.reply(`You are not authorized to do this.`);
+          //        }
+          //        break;
         case 'upvote':
-          if (
-            args.length === 1 &&
-            args[0].split(/[\/#]/).length === 6
-          ) {
-            let authorName = args[0].split(/[\/#]/)[4];
-            let permlinkName = args[0].split(/[\/#]/)[5];
-            if (
-              authorName.charAt(0) === '@' &&
-              !!permlinkName
-            ) {
-              // **************************************************
-              // Check registered user
-              // **************************************************
-              checkRegisteredUser(currentUserId)
-                .then(isRegistered => {
-                  console.log(isRegistered);
-                  if (isRegistered) {
-                    // **************************************************
-                    // Check date time
-                    // **************************************************
-                    return checkLastPost(
-                      currentUserId
-                    ).then(data => {
-                      if (!!data) {
-                        timeDiff = Math.floor(
-                          (currentCreatedTimestamp - data) /
-                            1000
-                        );
-                        if (timeDiff > config.timeAllowed) {
-                          // Proceed
-                        } else {
-                          throw 'NOT_YET_TIME';
-                          return;
-                        }
-                      }
-                    });
-
-                    console.log('registered');
-                  } else {
-                    console.log('not registered');
-                    // **************************************************
-                    // Register user
-                    // **************************************************
-                    return registration(
-                      currentUsername,
-                      currentUserId
-                    )
-                      .then(data => {
-                        console.log(data);
-                        if (data === 'DB_ERROR') {
-                          throw data;
-                        }
-                      })
-                      .catch(err => err);
-                  }
-                })
-                .then(() => {
-                  // **************************************************
-                  // Upvote Post
-                  // **************************************************
-                  return upvotePost(
-                    process.env.STEEM_POSTING,
-                    process.env.STEEM_USERNAME,
-                    authorName.substr(1),
-                    permlinkName,
-                    weightage * 100
-                  )
-                    .then(data => {
-                      if (data === 'ERROR') {
-                        throw 'NO_UPVOTE';
-                      } else {
-                        msg.reply(` this post is successfully upvoted by @Steemph.cebu#5291 : ${
-                          args[0]
-                        }.
-
-You are now in voting cooldown. ${config.timeAllowed /
-                          60 /
-                          60} hours left before you can request for an upvote.`);
-                        return;
-                      }
-                    })
-                    .then(() => {
-                      // **************************************************
-                      // Update Date Time of the Post
-                      // **************************************************
-                      return updateTime(
-                        currentUserId,
-                        currentCreatedTimestamp
-                      )
-                        .then(() =>
-                          console.log(`data updated`)
-                        )
-                        .catch(() => {
-                          throw 'DB_ERROR';
-                        });
-                    })
-                    .then(() => {
-                      // **************************************************
-                      // Comment on  Post
-                      // **************************************************
-                      return commentPost(
-                        process.env.STEEM_POSTING,
-                        process.env.STEEM_USERNAME,
-                        authorName.substr(1),
-                        permlinkName
-                      );
-                    });
-                })
-                .catch(err => {
-                  console.log(err);
-                  switch (err) {
-                    case 'NO_UPVOTE':
-                      msg.reply(
-                        'I cannot upvote this post. I might already upvoted this post or the link is invalid. Be reminded that for me to vote : \n `$upvote (Space) URL of your post`.'
-                      );
-                      break;
-                    case 'NOT_YET_TIME':
-                      msg.reply(
-                        `I had already voted on one of your post. Please wait for
- ${timeConvertMessage(
-   convert(config.timeAllowed - timeDiff)
- )}.`
-                      );
-                      break;
-                    case 'DB_ERROR':
-                      msg.reply('Database Error');
-                      break;
-                    case 'NO_COMMENT':
-                      msg.reply('No comment');
-                      break;
-                    default:
-                      msg.reply('ERROR');
-                      break;
-                  }
-                });
-
-              break;
-            } else {
-              msg.reply('Invalid link');
-            }
-          } else {
-            msg.reply(
-              'I cannot upvote this post. I might already upvoted this post or the link is invalid. Be reminded that for me to vote : \n `$upvote (Space) URL of your post`.'
-            );
+          const SP500 = '446649158976274452';
+          const SP400 = '446649226118823936';
+          const SP300 = '446649351352352768';
+          const SP200 = '446649427935887360';
+          const SP100 = '446649501252452354';
+          const SP50 = '446649546529832961';
+          const SP20 = '446649600426770455';
+          const SP0 = '446649667812458496';
+          switch (msg.channel.id) {
+            case SP500:
+              user(msg, args, 65)
+              break
+            case SP400:
+              user(msg, args, 55)
+              break
+            case SP300:
+              user(msg, args, 45)
+              break
+            case SP200:
+              user(msg, args, 35)
+              break
+            case SP100:
+              user(msg, args, 25)
+              break
+            case SP50:
+              user(msg, args, 17)
+              break
+            case SP20:
+              user(msg, args, 10)
+              break
+            case SP0:
+              user(msg, args, 5)
+              break
           }
           break;
         case 'help':
